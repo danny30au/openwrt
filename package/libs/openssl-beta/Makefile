@@ -71,8 +71,6 @@ HOSTCC=$(HOSTCC_NOCACHE)
 HOSTCXX=$(HOSTCXX_NOCACHE)
 endif
 
-STABLE_FILES_DIR:=$(TOPDIR)/package/libs/openssl/files
-
 define Package/openssl-beta/Default
   TITLE:=Open source SSL toolkit (beta)
   URL:=https://www.openssl.org/
@@ -438,16 +436,16 @@ endef
 define Package/libopenssl-beta-conf/install
 	$(INSTALL_DIR) $(1)/etc/ssl/modules.cnf.d $(1)/etc/config $(1)/etc/init.d
 	$(CP) $(PKG_INSTALL_DIR)/etc/ssl/openssl.cnf $(1)/etc/ssl/
-	$(INSTALL_BIN) $(STABLE_FILES_DIR)/openssl.init $(1)/etc/init.d/openssl
+	$(INSTALL_BIN) ./files/openssl.init $(1)/etc/init.d/openssl
 	$(SED) 's!%ENGINES_DIR%!/usr/lib/$(ENGINES_DIR)!' $(1)/etc/init.d/openssl
 	touch $(1)/etc/config/openssl
 	$(if $(CONFIG_OPENSSL_BETA_ENGINE),,
 		$(SED) 's!engines = engines_sect!#&!' $(1)/etc/ssl/openssl.cnf)
 	$(if $(CONFIG_OPENSSL_BETA_ENGINE_BUILTIN_DEVCRYPTO),
-		$(CP) $(STABLE_FILES_DIR)/devcrypto.cnf $(1)/etc/ssl/modules.cnf.d/
+		$(CP) ./files/devcrypto.cnf $(1)/etc/ssl/modules.cnf.d/
 		echo -e "config engine 'devcrypto'\n\toption enabled '1'\n\toption builtin '1'" >> $(1)/etc/config/openssl)
 	$(if $(CONFIG_OPENSSL_BETA_ENGINE_BUILTIN_PADLOCK),
-		$(CP) $(STABLE_FILES_DIR)/padlock.cnf $(1)/etc/ssl/modules.cnf.d/
+		$(CP) ./files/padlock.cnf $(1)/etc/ssl/modules.cnf.d/
 		echo -e "\nconfig engine 'padlock'\n\toption enabled '1'\n\toption builtin '1'" >> $(1)/etc/config/openssl)
 endef
 

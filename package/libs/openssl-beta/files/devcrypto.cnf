@@ -1,5 +1,5 @@
 [devcrypto_sect]
-# Leave this alone and configure algorithms with CIPERS/DIGESTS below
+# Leave this alone and configure algorithms with CIPHERS/DIGESTS below
 default_algorithms = ALL
 
 # Configuration commands:
